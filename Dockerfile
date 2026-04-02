@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     libxml2-dev \
     libonig-dev \
+    libicu-dev \
     zip \
     unzip \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
