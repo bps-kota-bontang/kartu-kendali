@@ -1,0 +1,24 @@
+name: CI/CD Kartu Kendali
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    name: Build Kartu Kendali
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+      - name: Docker Auth
+        run: |
+          echo "${{ secrets.DOCKER_REGISTRY_PASSWORD }}" | docker login ${{ secrets.DOCKER_REGISTRY_URL }} --username ${{ github.actor }} --password-stdin
+      - name: Build Docker Image
+        run: |
+          docker build \
+          -t ${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REGISTRY_USERNAME }}/kartu-kendali:latest \
+          .
+      - name: Push Docker Image
+        run: |
+          docker push ${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REGISTRY_USERNAME }}/kartu-kendali:latest
